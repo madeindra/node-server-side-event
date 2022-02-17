@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SSE Client</title>
+</head>
+
+<body>
+  <div id='content'></div>
+  <script>
+    let sse = new EventSource('http://localhost:3000/events');
+    
+    sse.onopen = (e) => {
+      document.getElementById('content').innerHTML += 'Connected to the server.<br/>';
+    };
+    
+    sse.onmessage = (e) => {
+      document.getElementById('content').innerHTML += e.data + '<br/>';
+    };
+    
+    sse.onerror = (e) => {
+      document.getElementById('content').innerHTML += 'An error occured.<br/>';
+    };
+  </script>
+</body>
+
+</html>
