@@ -18,15 +18,17 @@
       document.getElementById('content').innerHTML += 'Connected to the server.<br/>';
     };
     
-    // use this callback if you to recieve all messages regardless of the event type
+    // use this callback if you to recieve messages that do not contains 'event: ' field
+    // try disabling this
     sse.onmessage = (e) => {
       document.getElementById('content').innerHTML += e.data + '<br/>';
     };
 
-    // use this callback if you only want to recieve message from 'myevent' event type
-    // sse.addEventListener('myevent', (e) => {
-    //   document.getElementById('content').innerHTML += e.data + '<br/>';
-    // });
+    // use addEventListener if you only want to recieve messages from specific event type, for example 'greetings'
+    // try disabling this
+    sse.addEventListener('greetings', (e) => {
+      document.getElementById('content').innerHTML += e.data + '<br/>';
+    });
     
     // callback when connection error occured
     sse.onerror = (e) => {
