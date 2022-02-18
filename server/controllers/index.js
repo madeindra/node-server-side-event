@@ -19,23 +19,30 @@ const events = (req, res) => {
 
   // event sent in interval
   return setInterval(() => {
-    sendEvent(res, 'Hello there');
+    sendEvent(res, 'Hello there!', 'greetings');
+    sendEvent(res, 'Hi there!');
   }, sendInterval);
 }
 
 // event sender
 // (res) first param for sending response
 // (data) second param for data to be sent to the client, you may change it to vary for each time event called
-const sendEvent = (res, data) => {
+const sendEvent = (res, data, event = '') => {
   // id for sse
   const id = new Date().toDateString();
 
-  // sse in server has 3 specifiec field: retry, id, and data
+  // sse in server has 4 specifiec field: event, retry, id, and data
   // each writen with colon after it and space after the content
   // each line separated by \n
-  res.write(`retry: ${retryInterval}\n`);
-  res.write(`id: ${id}\n`);
-  res.write(`data: ${data}\n\n`); // double \n for last line
+  
+  // send event field only when function called with third parameter
+  if (event) {
+    res.write(`event: ${event}\n`); // set event, client can listen to this event's message or to all message
+  }
+
+  res.write(`retry: ${retryInterval}\n`); // time before retry when client lost its connection to server
+  res.write(`id: ${id}\n`); // id of the message
+  res.write(`data: ${data}\n\n`); // content of the message, double \n for last line
 }
 
 // export controllers
